@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'Search',
-    component: Search,
+    component: () => import('../views/Search.vue'),
   },
   {
     path: '/about',
