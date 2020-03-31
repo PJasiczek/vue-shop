@@ -1,4 +1,5 @@
 # vue-shop
+>
 
 ## Project setup
 ```
@@ -25,5 +26,5 @@ npm run test:unit
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Contact
+Created by [@PJasiczek](http://www.piotrjasiczek.pl/) - feel free to contact me!
