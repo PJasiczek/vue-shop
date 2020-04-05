@@ -4,8 +4,6 @@
   </div>
 </template>
 <script>
-/* eslint-disable eol-last */
-
 export default {
   name: 'About',
 };

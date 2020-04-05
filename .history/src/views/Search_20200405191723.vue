@@ -3,17 +3,12 @@
     <div class="search">
       <label for="search">Search</label>
       <input id="search" name="search" v-model="searchValue" @input="handleInput"/>
-      <ul>
-        <li v-for="item in results" :key="item.flight_number">
-          <p>{{ item.mission_name }}</p>
-        </li>
-      </ul>
     </div>
   </div>
 </template>
 
 <script>
-
+/* eslint-disable eol-last */
 import debounce from 'lodash/debounce';
 
 const axios = require('axios');
@@ -29,12 +24,11 @@ export default {
     };
   },
   methods: {
-    // eslint-disable-next-line
+    //eslint-disable eol-last
     handleInput: debounce(function() {
       axios.get(`${API}${this.searchValue}`)
         .then((response) => {
           this.results = response.data;
-          console.log(response.data);
         }).catch((error) => {
           console.log(error);
         });

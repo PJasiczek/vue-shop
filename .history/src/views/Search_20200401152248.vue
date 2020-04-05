@@ -1,24 +1,20 @@
 <template>
-  <div class="wrapper">
+  < class="wrapper">
     <div class="search">
       <label for="search">Search</label>
       <input id="search" name="search" v-model="searchValue" @input="handleInput"/>
-      <ul>
-        <li v-for="item in results" :key="item.flight_number">
-          <p>{{ item.mission_name }}</p>
-        </li>
-      </ul>
     </div>
+    <ul>
+      <li></li>
+    </ul>
   </div>
 </template>
 
 <script>
-
+/* eslint-disable eol-last */
 import debounce from 'lodash/debounce';
-
 const axios = require('axios');
-
-const API = 'https://api.spacexdata.com/v3/launches?rocket_name=';
+const API = 'https://api.spacexdata.com/v3/launches/';
 
 export default {
   name: 'Search',
@@ -29,12 +25,10 @@ export default {
     };
   },
   methods: {
-    // eslint-disable-next-line
     handleInput: debounce(function() {
       axios.get(`${API}${this.searchValue}`)
         .then((response) => {
-          this.results = response.data;
-          console.log(response.data);
+          console.log(response);
         }).catch((error) => {
           console.log(error);
         });

@@ -4,8 +4,8 @@
       <label for="search">Search</label>
       <input id="search" name="search" v-model="searchValue" @input="handleInput"/>
       <ul>
-        <li v-for="item in results" :key="item.flight_number">
-          <p>{{ item.mission_name }}</p>
+        <li v-for="result in results" :key="result.data[0].flight_number">
+          <p>{{result.data[0].flight_number}}</p>
         </li>
       </ul>
     </div>
