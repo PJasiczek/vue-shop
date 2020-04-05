@@ -1,5 +1,5 @@
 # vue-shop
->
+>This repository contains application code that collects data about space missions carried out by SpaceX.
 
 ## Project setup
 ```
