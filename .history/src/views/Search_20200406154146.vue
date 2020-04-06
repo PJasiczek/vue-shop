@@ -1,0 +1,71 @@
+<template>
+  <div class="wrapper">
+    <Claim/>
+    <div class="search">
+      <label for="search">Search</label>
+      <input id="search" name="search" v-model="searchValue" @input="handleInput"/>
+    </div>
+  </div>
+</template>
+
+<script>
+
+import debounce from 'lodash/debounce';
+import Claim from "@/components/Claim.vue"
+const axios = require('axios');
+
+const API = 'https://api.spacexdata.com/v3/launches?rocket_name=';
+
+export default {
+  name: 'Search',
+  components: {
+    Claim,
+  },
+  data() {
+    return {
+      searchValue: '',
+      results: [],
+    };
+  },
+  methods: {
+    // eslint-disable-next-line
+    handleInput: debounce(function() {
+      axios.get(`${API}${this.searchValue}`)
+        .then((response) => {
+          this.results = response.data;
+          console.log(response.data);
+        }).catch((error) => {
+          console.log(error);
+        });
+    }, 500),
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 30px;
+  width: 100%;
+}
+
+.search{
+  display: none;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+
+  label{
+    font-family: sans-serif;
+  }
+
+  input{
+    height: 50px;
+    border: 0;
+    border-bottom: 1px solid black;
+  }
+}
+</style>

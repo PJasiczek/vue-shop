@@ -1,0 +1,27 @@
+<template>
+    <div class="searchWrapper">
+      <input id="search" name="search" v-model="searchValue" @input="handleInput"/>
+    </div>
+</template>
+
+<script>
+/* eslint-disable eol-last */
+export default {
+  name: 'SearchInput',
+};
+</script>
+
+<style lang="scss" scoped>
+.searchWrapper{
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+
+  input{
+    height: 50px;
+    border: 0;
+    border-bottom: 1px solid black;
+    background: none;
+  }
+}
+</style>
