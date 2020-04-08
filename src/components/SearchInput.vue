@@ -1,5 +1,5 @@
 <template>
-      <input id="search" name="search" v-model="value" @input="handleChange"/>
+      <input id="search" :class="{dark}" name="search" :value="value" @input="handleChange"/>
 </template>
 
 <script>
@@ -10,6 +10,10 @@ export default {
     value: {
       type: String,
       required: true,
+    },
+    dark: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
@@ -30,7 +34,7 @@ export default {
     text-align: center;
     color: #ffffff;
     opacity: 0.7;
-    font-family: 'Baloo Thambi 2', sans-serif;
+    font-family: 'Quicksand', sans-serif;
     border-bottom: 1px solid #ffffff;
     background: none;
     transition: width 2s;
@@ -49,13 +53,31 @@ export default {
       outline: none;
       width: 200px;
 
-    @media (min-width: 768px) {
-        width: 260px;
-    }
+      @media (min-width: 768px) {
+          width: 260px;
+      }
 
-    @media (min-width: 1024px) {
-        width: 320px;
+      @media (min-width: 1024px) {
+          width: 320px;
+      }
     }
   }
+
+  .dark{
+    color: #000000;
+    border-bottom: 1.5px solid #1e3d4a;
   }
+
+  .dark:focus{
+      outline: none;
+      width: 200px;
+
+      @media (min-width: 768px) {
+          width: 260px;
+      }
+
+      @media (min-width: 1024px) {
+          width: 320px;
+      }
+    }
 </style>
