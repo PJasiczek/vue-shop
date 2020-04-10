@@ -1,15 +1,20 @@
 <template>
-  <div class="backgroudImage"/>
+  <div class="backgroud_image"/>
 </template>
 
 <script>
 /* eslint-disable eol-last */
 export default {
   name: 'BackgroudImage',
+  methods: {
+    backgroudnAnimation(e) {
+      this.$emit('input', e.target.value);
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
-.backgroudImage{
+.backgroud_image{
     position: fixed;
     top: 0;
     z-index: -1;

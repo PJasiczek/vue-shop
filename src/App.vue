@@ -1,12 +1,13 @@
 <template>
-  <div :class="[{inputStart: step === 1}, 'wrapper']">
-    <img src="./assets/SpaceX.svg" class="logo" />
+  <div :class="[{wrapper__input_start: step === 1}, 'wrapper']">
+    <img v-if="step === 1" src="./assets/spaceX-black.svg" class="logo" />
+    <img v-if="step === 0" src="./assets/spaceX-white.svg" class="logo" />
     <transition name="fade">
       <BackgroundImage v-if="step === 0" />
     </transition>
     <Claim v-if="step === 0" />
     <SearchInput v-model="searchValue" @input="handleInput" :dark="step === 1"/>
-    <div class="results" v-if="results && !loading && step === 1">
+    <div class="wrapper__results" v-if="results && !loading && step === 1">
       <Item v-for="item in results" :item="item" :key="item.flight_number"/>
     </div>
   </div>
@@ -60,60 +61,82 @@ export default {
 </script>
 
 <style lang="scss">
-  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap');
 
-  * {
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 30px;
+
+  &.wrapper__input_start {
+    justify-content: flex-start;
   }
+}
 
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Quicksand', sans-serif;
-  }
+.logo {
+  position: absolute;
+  top: 30px;
+  left: 0;;
+  margin: 0 auto;
+  transform: scale(0.6);
 
-  .wrapper {
-    position: relative;
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 30px;
-
-    &.inputStart {
-      justify-content: flex-start;
-    }
-  }
-
-  .logo {
-    position: absolute;
+  @media (min-width: 768px) and (max-width: 1024px){
     top: 30px;
     left: 0;
     transform: scale(0.6);
   }
 
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
+  @media (max-width: 768px) {
+    top: 10px;
+    left: 0;
+    right: 0;
+    transform: scale(0.5);
   }
 
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.wrapper__results{
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+
+  @media (min-width: 768px) and (max-width: 1024px){
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
   }
 
-  .results{
-    margin-top: 30px;
-    display: grid;
+  @media (max-width: 767px) {
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px;
-
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(3, 1fr);
-      grid-gap: 20px;
-    }
   }
+}
+
 </style>
