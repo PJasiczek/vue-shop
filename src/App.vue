@@ -8,8 +8,9 @@
     <Claim v-if="step === 0" />
     <SearchInput v-model="searchValue" @input="handleInput" :dark="step === 1"/>
     <div class="wrapper__results" v-if="results && !loading && step === 1">
-      <Item v-for="item in results" :item="item" :key="item.flight_number"/>
+      <Item v-for="item in results" :item="item" :key="item.flight_number" @click.native="handleModalOpen(item)" />
     </div>
+    <Modal v-if="modalOpen" @closeModal="modalOpen = false"/>
   </div>
 </template>
 <script>
@@ -24,6 +25,8 @@ import BackgroundImage from '@/components/BackgroundImage.vue';
 
 import Item from '@/components/Item.vue';
 
+import Modal from '@/components/Modal.vue';
+
 const axios = require('axios');
 
 const API = 'https://api.spacexdata.com/v3/launches?rocket_name=';
@@ -31,7 +34,7 @@ const API = 'https://api.spacexdata.com/v3/launches?rocket_name=';
 export default {
   name: 'Search',
   components: {
-    Claim, SearchInput, BackgroundImage, Item,
+    Claim, SearchInput, BackgroundImage, Item, Modal,
   },
   data() {
     return {
@@ -39,6 +42,7 @@ export default {
       step: 0,
       searchValue: '',
       results: [],
+      modalOpen: false,
     };
   },
   methods: {
@@ -56,6 +60,10 @@ export default {
           console.log(error);
         });
     }, 500),
+    handleModalOpen(item) {
+      console.log(item);
+      this.modalOpen = true;
+    },
   },
 };
 </script>

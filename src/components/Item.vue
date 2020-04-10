@@ -1,29 +1,29 @@
 <template>
-    <div class="item">
-      <div v-if="!backgroud_header.length" :style="defaultStyle" class="item__header"/>
-      <div v-if="backgroud_header.length" :style="style" class="item__header"/>
-      <div class="item__patch">
-        <img v-if="photo !== null" :src="photo" class="patch" />
-        <img v-if="photo === null"  src="../assets/spaceX-black.svg" class="patch" />
-      </div>
-      <div class="item__name">{{this.name.substring(0,13)}}</div>
-      <div class="item__description">{{this.details.substring(0,130)+".."}}</div>
-      <div class="item__details">
-        <div class="item__details__left">
-          <img src="../assets/map-marker.svg" class="marker" />
-          <div class="item__details__left__location">
-            {{this.location}}
-          </div>
-        </div>
-        <div class="item__details__right">
-          <img src="../assets/calendar-month-outline.svg" class="calendar" />
-          <div class="item__details__right__date">
-            {{this.date.substring(0,10)}}
-          </div>
-        </div>
-      </div>
-      <div class="item__button"><button class="button">Read more</button></div>
+  <div class="item">
+    <div v-if="!backgroud_header.length" :style="defaultStyle" class="item__header"/>
+    <div v-if="backgroud_header.length" :style="style" class="item__header"/>
+    <div class="item__patch">
+      <img v-if="photo !== null" :src="photo" class="patch" />
+      <img v-if="photo === null"  src="../assets/spaceX-black.svg" class="patch" />
     </div>
+    <div class="item__name">{{this.name.substring(0,13)}}</div>
+    <div class="item__description">{{this.details.substring(0,130)+".."}}</div>
+    <div class="item__details">
+      <div class="item__details__left">
+        <img src="../assets/map-marker.svg" class="marker" />
+        <div class="item__details__left__location">
+          {{this.location}}
+        </div>
+      </div>
+      <div class="item__details__right">
+        <img src="../assets/calendar-month-outline.svg" class="calendar" />
+        <div class="item__details__right__date">
+          {{this.date.substring(0,10)}}
+        </div>
+      </div>
+    </div>
+    <div class="item__button"><button class="button">Read more</button></div>
+  </div>
 </template>
 
 <script>
