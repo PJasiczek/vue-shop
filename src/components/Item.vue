@@ -42,14 +42,23 @@ export default {
   },
   data() {
     return {
-      backgroud_header: this.item.links.flickr_images,
-      name: this.item.mission_name,
-      details: this.item.details,
-      photo: this.item.links.mission_patch,
-      title: this.item.mission_name,
-      location: this.item.launch_site.site_name,
-      date: this.item.launch_date_local,
+      backgroud_header: null,
+      name: null,
+      details: null,
+      photo: null,
+      title: null,
+      location: null,
+      date: null,
     };
+  },
+  mounted() {
+    this.backgroud_header = this.item.links.flickr_images;
+    this.name = this.item.mission_name;
+    this.details = this.item.details;
+    this.photo = this.item.links.mission_patch;
+    this.title = this.item.mission_name;
+    this.location = this.item.launch_site.site_name;
+    this.date = this.item.launch_date_local;
   },
   computed: {
     style() {

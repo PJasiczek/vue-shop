@@ -10,7 +10,7 @@
     <div class="wrapper__results" v-if="results && !loading && step === 1">
       <Item v-for="item in results" :item="item" :key="item.flight_number" @click.native="handleModalOpen(item)" />
     </div>
-    <Modal v-if="modalOpen" @closeModal="modalOpen = false"/>
+    <Modal v-if="modalOpen" @closeModal="modalOpen = false" :item="modalItem"/>
   </div>
 </template>
 <script>
@@ -62,6 +62,7 @@ export default {
     }, 500),
     handleModalOpen(item) {
       console.log(item);
+      this.modalItem = item;
       this.modalOpen = true;
     },
   },
@@ -76,6 +77,22 @@ export default {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555555;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
 }
 
 body {

@@ -1,5 +1,5 @@
 <template>
-      <input id="search" :class="{dark}" name="search" :value="value" @input="handleChange"/>
+      <input id="search" :class="{dark}" name="search" :value="value" @input="handleChange" autocomplete="chrome-off"/>
 </template>
 
 <script>
@@ -38,7 +38,7 @@ input{
   opacity: 0.7;
   font-family: 'Quicksand', sans-serif;
   border-bottom: 1.5px solid #ffffff;
-  background: none;
+  background-color: transparent;
   transition: box-shadow 2s;
   font-size: 17px;
   margin-top: 10px;
@@ -62,6 +62,11 @@ input{
   &:hover{
     outline: none;
     box-shadow: -1px 10px 10px -11px rgba(255,255,255,0.75);
+  }
+
+  &:active, &:link, &:visited, &:focus{
+    outline: none;
+    background-color: transparent;
   }
 }
 
