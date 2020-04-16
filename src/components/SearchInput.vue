@@ -1,5 +1,5 @@
 <template>
-      <input id="search" :class="{dark}" name="search" :value="value" @input="handleChange" autocomplete="chrome-off"/>
+      <input id="search" :class="{dark}" name="search" :value="value" @input="handleChange"/>
 </template>
 
 <script>

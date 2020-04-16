@@ -4,10 +4,10 @@
     <div v-if="backgroud_header.length" :style="style" class="item__header"/>
     <div class="item__patch">
       <img v-if="photo !== null" :src="photo" class="patch" />
-      <img v-if="photo === null"  src="../assets/spaceX-black.svg" class="patch" />
+      <img v-if="photo === null" src="../assets/spaceX-black.svg" class="patch" />
     </div>
     <div class="item__name">{{this.name.substring(0,13)}}</div>
-    <div class="item__description">{{this.details.substring(0,130)+".."}}</div>
+    <div class="item__description" v-if="this.details">{{this.details.substring(0,130)+".."}}</div>
     <div class="item__details">
       <div class="item__details__left">
         <img src="../assets/map-marker.svg" class="marker" />
