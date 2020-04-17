@@ -1,5 +1,11 @@
 <template>
-      <input id="search" :class="{dark}" name="search" :value="value" @input="handleChange"/>
+  <input
+    id="search"
+    :class="{ dark }"
+    name="search"
+    :value="value"
+    @input="handleChange"
+  />
 </template>
 
 <script>
@@ -25,8 +31,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-input{
+input {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,15 +41,15 @@ input{
   text-align: center;
   color: #ffffff;
   opacity: 0.7;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   border-bottom: 1.5px solid #ffffff;
-  background: none;
+  background-color: transparent;
   transition: box-shadow 2s;
   font-size: 17px;
   margin-top: 10px;
   outline: none;
 
-  @media (min-width: 768px) and (max-width: 1024px){
+  @media (min-width: 768px) and (max-width: 1024px) {
     outline: none;
     height: 30px;
     font-size: 15px;
@@ -59,19 +64,27 @@ input{
     width: 150px;
   }
 
-  &:hover{
+  &:hover {
     outline: none;
-    box-shadow: -1px 10px 10px -11px rgba(255,255,255,0.75);
+    box-shadow: -1px 10px 10px -11px rgba(255, 255, 255, 0.75);
+  }
+
+  &:active,
+  &:link,
+  &:visited,
+  &:focus {
+    outline: none;
+    background-color: transparent;
   }
 }
 
-.dark{
+.dark {
   color: #000000;
   border-bottom: 1.5px solid #1e3d4a;
   background: none;
   margin-top: 40px;
 
-  @media (min-width: 768px) and (max-width: 1024px){
+  @media (min-width: 768px) and (max-width: 1024px) {
     margin-top: 60px;
   }
 
@@ -79,10 +92,9 @@ input{
     margin-top: 20px;
   }
 
-  &:hover{
+  &:hover {
     outline: none;
-    box-shadow: -1px 10px 10px -11px rgba(0,0,0,0.75);
+    box-shadow: -1px 10px 10px -11px rgba(0, 0, 0, 0.75);
   }
 }
-
 </style>
