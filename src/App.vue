@@ -1,17 +1,44 @@
 <template>
-  <div :class="[{wrapper__input_start: step === 1}, 'wrapper']">
-    <img v-if="step === 1" src="./assets/spaceX-black.svg" class="logo" />
-    <img v-if="step === 0" src="./assets/spaceX-white.svg" class="logo" />
+  <div :class="[{ wrapper__input_start: step === 1 }, 'wrapper']">
+    <img
+      v-if="step === 1"
+      src="./assets/spaceX-black.svg"
+      class="logo"
+    />
+    <img
+      v-if="step === 0"
+      src="./assets/spaceX-white.svg"
+      class="logo"
+    />
     <transition name="fade">
       <BackgroundImage v-if="step === 0" />
     </transition>
     <Claim v-if="step === 0" />
-    <SearchInput v-model="searchValue" @input="handleInput" :dark="step === 1"/>
-    <div class="wrapper__results" v-if="results && !loading && step === 1">
-      <Item v-for="item in results" :item="item" :key="item.flight_number" @click.native="handleModalOpen(item)" />
+    <SearchInput
+      v-model="searchValue"
+      @input="handleInput"
+      :dark="step === 1"
+    />
+    <div
+      class="wrapper__results"
+      v-if="results && !loading && step === 1"
+    >
+      <Item
+        v-for="item in results"
+        :item="item"
+        :key="item.flight_number"
+        @click.native="handleModalOpen(item)"
+      />
     </div>
-    <Modal v-if="modalOpen" @closeModal="modalOpen = false" :item="modalItem"/>
-    <div class="sk-chase" v-if="loading && step === 1">
+    <Modal
+      v-if="modalOpen"
+      @closeModal="modalOpen = false"
+      :item="modalItem"
+    />
+    <div
+      class="sk-chase"
+      v-if="loading && step === 1"
+    >
       <div class="sk-chase-dot"></div>
       <div class="sk-chase-dot"></div>
       <div class="sk-chase-dot"></div>
@@ -22,7 +49,6 @@
   </div>
 </template>
 <script>
-
 import debounce from 'lodash/debounce';
 
 import Claim from '@/components/Claim.vue';
@@ -42,7 +68,11 @@ const API = 'https://api.spacexdata.com/v3/launches?rocket_name=';
 export default {
   name: 'Search',
   components: {
-    Claim, SearchInput, BackgroundImage, Item, Modal,
+    Claim,
+    SearchInput,
+    BackgroundImage,
+    Item,
+    Modal,
   },
   data() {
     return {
@@ -57,19 +87,18 @@ export default {
     // eslint-disable-next-line
     handleInput: debounce(function() {
       this.loading = true;
-      console.log(this.searchValue);
-      axios.get(`${API}${this.searchValue}`)
+      axios
+        .get(`${API}${this.searchValue}`)
         .then((response) => {
           this.results = response.data;
           this.loading = false;
           this.step = 1;
-          console.log(response.data);
-        }).catch((error) => {
+        })
+        .catch((error) => {
           console.log(error);
         });
     }, 500),
     handleModalOpen(item) {
-      console.log(item);
       this.modalItem = item;
       this.modalOpen = true;
     },
@@ -78,8 +107,7 @@ export default {
 </script>
 
 <style lang="scss">
-
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -106,7 +134,7 @@ export default {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 .wrapper {
@@ -128,11 +156,11 @@ body {
 .logo {
   position: absolute;
   top: 30px;
-  left: 0;;
+  left: 0;
   margin: 0 auto;
   transform: scale(0.6);
 
-  @media (min-width: 768px) and (max-width: 1024px){
+  @media (min-width: 768px) and (max-width: 1024px) {
     top: 30px;
     left: 0;
     transform: scale(0.6);
@@ -144,14 +172,15 @@ body {
     right: 0;
     transform: scale(0.5);
   }
-
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
 
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 
@@ -169,55 +198,86 @@ body {
   position: absolute;
   left: 0;
   top: 0;
-  animation: sk-chase-dot 2.0s infinite ease-in-out both;
+  animation: sk-chase-dot 2s infinite ease-in-out both;
 }
 
 .sk-chase-dot:before {
-  content: '';
+  content: "";
   display: block;
   width: 25%;
   height: 25%;
   background-color: #000000;
   border-radius: 100%;
-  animation: sk-chase-dot-before 2.0s infinite ease-in-out both;
+  animation: sk-chase-dot-before 2s infinite ease-in-out both;
 }
 
-.sk-chase-dot:nth-child(1) { animation-delay: -1.1s; }
-.sk-chase-dot:nth-child(2) { animation-delay: -1.0s; }
-.sk-chase-dot:nth-child(3) { animation-delay: -0.9s; }
-.sk-chase-dot:nth-child(4) { animation-delay: -0.8s; }
-.sk-chase-dot:nth-child(5) { animation-delay: -0.7s; }
-.sk-chase-dot:nth-child(6) { animation-delay: -0.6s; }
-.sk-chase-dot:nth-child(1):before { animation-delay: -1.1s; }
-.sk-chase-dot:nth-child(2):before { animation-delay: -1.0s; }
-.sk-chase-dot:nth-child(3):before { animation-delay: -0.9s; }
-.sk-chase-dot:nth-child(4):before { animation-delay: -0.8s; }
-.sk-chase-dot:nth-child(5):before { animation-delay: -0.7s; }
-.sk-chase-dot:nth-child(6):before { animation-delay: -0.6s; }
+.sk-chase-dot:nth-child(1) {
+  animation-delay: -1.1s;
+}
+.sk-chase-dot:nth-child(2) {
+  animation-delay: -1s;
+}
+.sk-chase-dot:nth-child(3) {
+  animation-delay: -0.9s;
+}
+.sk-chase-dot:nth-child(4) {
+  animation-delay: -0.8s;
+}
+.sk-chase-dot:nth-child(5) {
+  animation-delay: -0.7s;
+}
+.sk-chase-dot:nth-child(6) {
+  animation-delay: -0.6s;
+}
+.sk-chase-dot:nth-child(1):before {
+  animation-delay: -1.1s;
+}
+.sk-chase-dot:nth-child(2):before {
+  animation-delay: -1s;
+}
+.sk-chase-dot:nth-child(3):before {
+  animation-delay: -0.9s;
+}
+.sk-chase-dot:nth-child(4):before {
+  animation-delay: -0.8s;
+}
+.sk-chase-dot:nth-child(5):before {
+  animation-delay: -0.7s;
+}
+.sk-chase-dot:nth-child(6):before {
+  animation-delay: -0.6s;
+}
 
 @keyframes sk-chase {
-  100% { transform: rotate(360deg); }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes sk-chase-dot {
-  80%, 100% { transform: rotate(360deg); }
+  80%,
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes sk-chase-dot-before {
   50% {
     transform: scale(0.4);
-  } 100%, 0% {
-    transform: scale(1.0);
+  }
+  100%,
+  0% {
+    transform: scale(1);
   }
 }
 
-.wrapper__results{
+.wrapper__results {
   margin-top: 30px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
 
-  @media (min-width: 768px) and (max-width: 1024px){
+  @media (min-width: 768px) and (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
   }
@@ -227,5 +287,4 @@ body {
     grid-gap: 10px;
   }
 }
-
 </style>

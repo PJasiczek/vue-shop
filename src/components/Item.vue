@@ -1,23 +1,54 @@
 <template>
   <div class="item">
-    <div v-if="!backgroud_header.length" :style="defaultStyle" class="item__header"/>
-    <div v-if="backgroud_header.length" :style="style" class="item__header"/>
+    <div
+      v-if="!(backgroud_header === 0)"
+      :style="defaultStyle"
+      class="item__header"
+    />
+    <div
+      v-if="backgroud_header !== 0"
+      :style="style"
+      class="item__header"
+    />
     <div class="item__patch">
-      <img v-if="photo !== null" :src="photo" class="patch" />
-      <img v-if="photo === null" src="../assets/spaceX-black.svg" class="patch" />
+      <img
+        v-if="photo !== null"
+        :src="photo"
+        class="patch"
+      />
+      <img
+        v-if="photo === null"
+        src="../assets/spaceX-black.svg"
+        class="patch"
+      />
     </div>
-    <div class="item__name">{{this.name.substring(0,13)}}</div>
-    <div class="item__description" v-if="this.details">{{this.details.substring(0,130)+".."}}</div>
+    <div
+      class="item__name"
+      v-if="this.name !== null"
+    >{{this.name.substring(0,13)}}</div>
+    <div
+      class="item__description"
+      v-if="this.details !== null"
+    >{{this.details.substring(0,130)+".."}}</div>
     <div class="item__details">
       <div class="item__details__left">
-        <img src="../assets/map-marker.svg" class="marker" />
+        <img
+          src="../assets/map-marker.svg"
+          class="marker"
+        />
         <div class="item__details__left__location">
           {{this.location}}
         </div>
       </div>
       <div class="item__details__right">
-        <img src="../assets/calendar-month-outline.svg" class="calendar" />
-        <div class="item__details__right__date">
+        <img
+          src="../assets/calendar-month-outline.svg"
+          class="calendar"
+        />
+        <div
+          class="item__details__right__date"
+          v-if="this.date !== null"
+        >
           {{this.date.substring(0,10)}}
         </div>
       </div>
@@ -72,31 +103,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.item{
+.item {
   position: relative;
   width: 300px;
   height: 300px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50%;
-  -webkit-box-shadow: 10px 10px 20px -11px rgba(0,0,0,0.75);
-  -moz-box-shadow: 10px 10px 20px -11px rgba(0,0,0,0.75);
-  box-shadow: 10px 10px 20px -11px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 10px 10px 20px -11px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 20px -11px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 10px 20px -11px rgba(0, 0, 0, 0.75);
 
-  @media (min-width: 768px) and (max-width: 1024px){
-      width: 220px;
-      height: 310px;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 220px;
+    height: 310px;
   }
 
   @media (max-width: 767px) {
-      width: 140px;
-      height: 210px;
+    width: 140px;
+    height: 210px;
   }
-
 }
 
-.item__header{
+.item__header {
   position: absolute;
   width: 100%;
   height: 150px;
@@ -105,16 +134,16 @@ export default {
   background-position: 50%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  -webkit-box-shadow: 10px 10px 20px -11px rgba(0,0,0,0.75);
-  -moz-box-shadow: 10px 10px 20px -11px rgba(0,0,0,0.75);
-  box-shadow: 10px 10px 10px -11px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 10px 10px 20px -11px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 20px -11px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 10px 10px -11px rgba(0, 0, 0, 0.75);
 
   @media (max-width: 767px) {
     height: 100px;
   }
 }
 
-.item__patch{
+.item__patch {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -125,9 +154,9 @@ export default {
   height: 80px;
   border-radius: 50% 50%;
   background-color: #ffffff;
-  -webkit-box-shadow: 5px 10px 10px -11px rgba(0,0,0,0.75);
-  -moz-box-shadow: 5px 10px 10px -11px rgba(0,0,0,0.75);
-  box-shadow: 5px 10px 10px -11px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 5px 10px 10px -11px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 5px 10px 10px -11px rgba(0, 0, 0, 0.75);
+  box-shadow: 5px 10px 10px -11px rgba(0, 0, 0, 0.75);
 
   @media (max-width: 767px) {
     top: 80px;
@@ -136,7 +165,7 @@ export default {
     height: 40px;
   }
 
-  .patch{
+  .patch {
     width: 50px;
     height: 50px;
 
@@ -147,7 +176,7 @@ export default {
   }
 }
 
-.item__button{
+.item__button {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -164,13 +193,13 @@ export default {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-family: 'Quicksand', sans-serif;
+    font-family: "Quicksand", sans-serif;
     font-size: 10px;
     cursor: pointer;
     border-radius: 2px 2px 2px 2px;
-    -webkit-box-shadow: 5px 10px 10px -11px rgba(0,0,0,0.75);
-    -moz-box-shadow: 5px 10px 10px -11px rgba(0,0,0,0.75);
-    box-shadow: 5px 10px 10px -11px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 5px 10px 10px -11px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 5px 10px 10px -11px rgba(0, 0, 0, 0.75);
+    box-shadow: 5px 10px 10px -11px rgba(0, 0, 0, 0.75);
 
     @media (max-width: 767px) {
       padding: 5px 20px;
@@ -179,14 +208,14 @@ export default {
   }
 }
 
-.item__name{
+.item__name {
   position: absolute;
   top: 170px;
   left: 30px;
   width: 50%;
   height: 50px;
   font-weight: 700;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-size: 12px;
 
   @media (max-width: 767px) {
@@ -196,13 +225,13 @@ export default {
   }
 }
 
-.item__description{
+.item__description {
   position: absolute;
   top: 203px;
   left: 30px;
   width: 80%;
   height: 30px;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-size: 9px;
   text-align: justify;
   text-overflow: ellipsis;
@@ -212,7 +241,7 @@ export default {
   }
 }
 
-.item__details{
+.item__details {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -221,11 +250,11 @@ export default {
   top: 240px;
   width: 100%;
   height: 20px;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: 500;
   font-size: 9px;
 
-  @media (min-width: 768px) and (max-width: 1024px){
+  @media (min-width: 768px) and (max-width: 1024px) {
     top: 250px;
   }
 
@@ -237,7 +266,7 @@ export default {
     justify-content: center;
   }
 
-  .item__details__left{
+  .item__details__left {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -248,7 +277,7 @@ export default {
     }
   }
 
-  .item__details__right{
+  .item__details__right {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -259,7 +288,7 @@ export default {
     }
   }
 
-  .item__details__left__location{
+  .item__details__left__location {
     width: 100%;
 
     @media (max-width: 767px) {
@@ -267,7 +296,7 @@ export default {
     }
   }
 
-  .item__details__right__date{
+  .item__details__right__date {
     width: 100%;
 
     @media (max-width: 767px) {
@@ -275,7 +304,8 @@ export default {
     }
   }
 
-  .calendar, .marker {
+  .calendar,
+  .marker {
     transform: scale(0.5);
   }
 }
