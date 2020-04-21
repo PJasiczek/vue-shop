@@ -76,7 +76,15 @@
         <div class="inner_wrapper__box__item_details">{{ this.item.details }}</div>
       </div>
       <div class="inner_wrapper_timeline">
-        <div class="inner_wrapper_timeline_title"><b>Timeline</b></div>
+        <div class="inner_wrapper_timeline_title"><b>Timeline</b>
+          <img
+            src="../assets/alert-circle-outline.svg"
+            class="marker_warning"
+            @mouseenter="handleTooltipTimelineIn"
+            @mouseleave="handleTooltipTimelineOut"
+          />
+          <div class="tooltip_timeline">Hover over the selected stage on the timeline of the selected space mission</div>
+        </div>
         <div class="inner_wrapper_timeline__item">
           <svg
             id="timeline"
@@ -92,7 +100,8 @@
               class="timeline_marker"
               v-for="index in (0, parseInt(Object.keys(this.item.timeline).length))"
               :key="index"
-              @mouseover="handleTimeline(index - 1)"
+              @mouseenter="handleTimelineIn(index - 1)"
+              @mouseleave="handleTimelineOut(index - 1)"
             >
               <circle
                 :cx="parseInt(-10, 10) + (560 / parseInt(timeline_lenght)) * index - 1"
@@ -108,14 +117,31 @@
                 fill="black"
               />
             </g>
+            <g
+              class="timeline_marker--active"
+              v-for="index in (0, parseInt(Object.keys(this.item.timeline).length))"
+              :key="parseInt(timeline_lenght) + index"
+              @mouseenter="handleTimelineIn(index - 1)"
+              @mouseleave="handleTimelineOut(index - 1)"
+            >
+              <circle
+                :cx="parseInt(-10, 10) + (560 / parseInt(timeline_lenght)) * index - 1"
+                cy="5"
+                r="4.5"
+                fill="white"
+                stroke="black"
+              />
+              <circle
+                :cx="parseInt(-10, 10) + (560 / parseInt(timeline_lenght)) * index - 1"
+                cy="5"
+                r="2.5"
+                fill="black"
+              />
+            </g>
           </svg>
         </div>
-        <div class="inner_wrapper_timeline_value">
-          T+ 00:20:00
-        </div>
-        <div class="inner_wrapper_timeline_insert">
-          CRS-20
-        </div>
+        <div class="inner_wrapper_timeline_value" />
+        <div class="inner_wrapper_timeline_insert" />
       </div>
       <div
         class="inner_wrapper__box"
@@ -393,7 +419,7 @@
         <div class="inner_wrapper__gallery__inner">
           <div
             class="inner_wrapper__gallery__inner__item_1"
-            @click="handleClickLeft"
+            @click="handleSwitchGalleryIcons"
           >
             <img
               src="../assets/chevron-left.svg"
@@ -539,7 +565,7 @@ export default {
     };
   },
   methods: {
-    handleClickLeft() {
+    handleSwitchGalleryIcons() {
       if (Object.keys(this.photos).length !== 0) {
         this.iterator += 1;
         if (this.is_start === true) {
@@ -593,12 +619,24 @@ export default {
         }
       }
     },
-    handleTimeline(index) {
-      $('.inner_wrapper_timeline_value').text(this.timelineDateFormat(this.timeline_sorted_values[index]));
+    handleTimelineIn(index) {
+      $('.inner_wrapper_timeline_value').text(this.timelineDateFormat(this.timeline_sorted_values[index])).animate({ opacity: 1 }, 500);
       $('.inner_wrapper_timeline_insert').text(
         this.timeline_sorted_keys[index] !== undefined
           ? this.timeline_sorted_keys[index].replace(/_/g, ' ') : 'undefined',
-      ).css({ 'text-transform': 'capitalize' });
+      ).css({ 'text-transform': 'capitalize' }).animate({ opacity: 1 }, 500);
+      $(`.timeline_marker:nth-child(${index + 2})`).delay(200).animate({ opacity: 0 }, 500);
+      $(`.timeline_marker--active:nth-child(${this.timeline_lenght + index + 2})`).delay(200).animate({ opacity: 1 }, 500);
+    },
+    handleTimelineOut(index) {
+      $(`.timeline_marker--active:nth-child(${this.timeline_lenght + index + 2})`).delay(200).animate({ opacity: 0 }, 500);
+      $(`.timeline_marker:nth-child(${index + 2})`).delay(200).animate({ opacity: 1 }, 500);
+    },
+    handleTooltipTimelineIn() {
+      $('.tooltip_timeline').animate({ opacity: 1 }, 500);
+    },
+    handleTooltipTimelineOut() {
+      $('.tooltip_timeline').animate({ opacity: 0 }, 500);
     },
     compareTimelineValues(a, b) {
       return a - b;
@@ -770,8 +808,49 @@ export default {
     }
 
     .inner_wrapper_timeline_title {
+      position: relative;
       font-size: 11px;
       border-bottom: 0.3px solid rgba(0, 0, 0, 0.5);
+
+      .marker_warning {
+        position: relative;
+        top: 2px;
+        width: 12px;
+        height: 12px;
+        margin-left: 5px;
+
+        @media (max-width: 767px) {
+          display: none;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .tooltip_timeline {
+        position: absolute;
+        left: 70px;
+        top: 0px;
+        width: 350px;
+        height: 17px;
+        font-size: 8px;
+        text-align: center;
+        padding: 3px;
+        color: #ffffff;
+        border-radius: 3px;
+        opacity: 0;
+        background-color: #41414159;
+
+         @media (max-width: 767px) {
+          display: none;
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+          width: 250px;
+          height: 17px;
+        }
+      }
     }
 
     .inner_wrapper_timeline__item {
@@ -792,13 +871,19 @@ export default {
 
         .timeline_marker {
           cursor: pointer;
+          z-index: 1;
+        }
+
+        .timeline_marker--active {
+          cursor: pointer;
+          opacity: 0;
         }
       }
     }
 
     .inner_wrapper_timeline_value {
       width: 100%;
-      height: 50px;
+      height: 20px;
       font-size: 16px;
       font-weight: 700;
       text-align: center;
@@ -812,7 +897,7 @@ export default {
 
     .inner_wrapper_timeline_insert {
       width: 100%;
-      height: 50px;
+      height: 20px;
       font-size: 9px;
       font-weight: 400;
       text-align: center;
