@@ -1,5 +1,9 @@
 <template>
   <div :class="[{ wrapper__input_start: step === 1 }, 'wrapper']">
+    <vue-headful
+      title="Space Missions | SpaceX"
+      description="SpaceX designs, manufactures and launches advanced rockets and spacecraft. The company was founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people to live on other planets. There you can find all information about latest SpaceX missions!"
+    />
     <img
       v-if="step === 1"
       src="./assets/spaceX-black.svg"
