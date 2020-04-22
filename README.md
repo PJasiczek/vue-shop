@@ -1,7 +1,10 @@
 # vue-shop
 >This repository contains application code that collects data about space missions carried out by SpaceX.
 
-## Open Spacex Missions API
+## Result
+[https://spacex-space-missions.netlify.app/](https://spacex-space-missions.netlify.app/)
+
+## Open SpaceX Missions API
 [https://github.com/r-spacex/SpaceX-API](https://github.com/r-spacex/SpaceX-API)
 
 ## Screenshots from website
