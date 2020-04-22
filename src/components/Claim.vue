@@ -1,6 +1,6 @@
 <template>
   <div class="claim_wrapper">
-    <h1 class="claim_wrapper__claim">STARLING MISSSION</h1>
+    <h1 class="claim_wrapper__claim">SPACE MISSSIONS</h1>
     <p class="claim_wrapper__subclaim">
       SpaceX designs, manufactures and launches advanced rockets and spacecraft. The company was
       founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people
