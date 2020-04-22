@@ -23,7 +23,10 @@
           class="patch"
         />
       </div>
-      <div class="inner_wrapper__name">{{ this.item.mission_name }}</div>
+      <div
+        class="inner_wrapper__name"
+        v-if="this.item.mission_name"
+      >{{ this.item.mission_name }}</div>
       <div class="inner_wrapper__box">
         <div class="inner_wrapper__box__item_title"><b>Launch data</b></div>
         <div
@@ -75,8 +78,19 @@
         <div class="inner_wrapper__box__item_title"><b>Details</b></div>
         <div class="inner_wrapper__box__item_details">{{ this.item.details }}</div>
       </div>
-      <div class="inner_wrapper_timeline">
-        <div class="inner_wrapper_timeline_title"><b>Timeline</b></div>
+      <div
+        class="inner_wrapper_timeline"
+        v-if="this.timeline_lenght"
+      >
+        <div class="inner_wrapper_timeline_title"><b>Timeline</b>
+          <img
+            src="../assets/alert-circle-outline.svg"
+            class="marker_warning"
+            @mouseenter="handleTooltipTimelineIn"
+            @mouseleave="handleTooltipTimelineOut"
+          />
+          <div class="tooltip_timeline">Hover over the selected stage on the timeline of the selected space mission</div>
+        </div>
         <div class="inner_wrapper_timeline__item">
           <svg
             id="timeline"
@@ -90,9 +104,10 @@
             />
             <g
               class="timeline_marker"
-              v-for="index in (0, parseInt(Object.keys(this.item.timeline).length))"
+              v-for="index in (0, parseInt((this.timeline_lenght !== null ? this.timeline_lenght : 0), 10))"
               :key="index"
-              @mouseover="handleTimeline(index - 1)"
+              @mouseenter="handleTimelineIn(index - 1)"
+              @mouseleave="handleTimelineOut(index - 1)"
             >
               <circle
                 :cx="parseInt(-10, 10) + (560 / parseInt(timeline_lenght)) * index - 1"
@@ -108,14 +123,31 @@
                 fill="black"
               />
             </g>
+            <g
+              class="timeline_marker--active"
+              v-for="index in (0, parseInt((this.timeline_lenght !== null ? this.timeline_lenght : 0), 10))"
+              :key="parseInt(timeline_lenght) + index"
+              @mouseenter="handleTimelineIn(index - 1)"
+              @mouseleave="handleTimelineOut(index - 1)"
+            >
+              <circle
+                :cx="parseInt(-10, 10) + (560 / parseInt(timeline_lenght)) * index - 1"
+                cy="5"
+                r="4.5"
+                fill="white"
+                stroke="black"
+              />
+              <circle
+                :cx="parseInt(-10, 10) + (560 / parseInt(timeline_lenght)) * index - 1"
+                cy="5"
+                r="2.5"
+                fill="black"
+              />
+            </g>
           </svg>
         </div>
-        <div class="inner_wrapper_timeline_value">
-          T+ 00:20:00
-        </div>
-        <div class="inner_wrapper_timeline_insert">
-          CRS-20
-        </div>
+        <div class="inner_wrapper_timeline_value" />
+        <div class="inner_wrapper_timeline_insert" />
       </div>
       <div
         class="inner_wrapper__box"
@@ -131,44 +163,92 @@
           }}</a>
         </div>
       </div>
-      <div class="inner_wrapper__box">
+      <div
+        class="inner_wrapper__box"
+        v-if="this.item.rocket"
+      >
         <div class="inner_wrapper__box__item_title"><b>Rocket data</b></div>
-        <div class="inner_wrapper__box__item">
+        <div
+          class="inner_wrapper__box__item"
+          v-if="this.item.rocket.rocket_name"
+        >
           <b>Rocket name: </b>{{ this.item.rocket.rocket_name }}
         </div>
-        <div class="inner_wrapper__box__item">
+        <div
+          class="inner_wrapper__box__item"
+          v-if=" this.item.rocket.rocket_type"
+        >
           <b>Rocket type: </b>{{ this.item.rocket.rocket_type }}
         </div>
-        <div class="inner_wrapper__box__item_title"><b>First stage: </b></div>
+        <div
+          class="inner_wrapper__box__item_title"
+          v-if="this.item.rocket.first_stage"
+        ><b>First stage: </b></div>
         <div
           class="inner_wrapper__box__item__box"
           v-for="core in this.item.rocket.first_stage.cores"
           :key="core.core_serial"
         >
           <div class="inner_wrapper__box__item__box_title"><b>Cores</b></div>
-          <div class="inner_wrapper__box__item"><b>Core serial: </b>{{ core.core_serial }}</div>
-          <div class="inner_wrapper__box__item"><b>Flight: </b>{{ core.flight }}</div>
-          <div class="inner_wrapper__box__item"><b>Block: </b>{{ core.block }}</div>
-          <div class="inner_wrapper__box__item">
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.core_serial"
+          ><b>Core serial: </b>{{ core.core_serial }}</div>
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.flight"
+          ><b>Flight: </b>{{ core.flight }}</div>
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.block"
+          ><b>Block: </b>{{ core.block }}</div>
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.gridfins"
+          >
             <b>Gridfins: </b>{{ core.gridfins ? "Yes" : "No" }}
           </div>
-          <div class="inner_wrapper__box__item"><b>Legs: </b>{{ core.legs ? "Yes" : "No" }}</div>
-          <div class="inner_wrapper__box__item">
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.legs"
+          ><b>Legs: </b>{{ core.legs ? "Yes" : "No" }}</div>
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.reused"
+          >
             <b>Reused: </b>{{ core.reused ? "Yes" : "No" }}
           </div>
-          <div class="inner_wrapper__box__item">
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.land_success"
+          >
             <b>Land success: </b>{{ core.land_success ? "Yes" : "No" }}
           </div>
-          <div class="inner_wrapper__box__item">
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.landing_intent"
+          >
             <b>Lading intent: </b>{{ core.landing_intent ? "Yes" : "No" }}
           </div>
-          <div class="inner_wrapper__box__item"><b>Landing type: </b>{{ core.landing_type }}</div>
-          <div class="inner_wrapper__box__item">
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.landing_type"
+          ><b>Landing type: </b>{{ core.landing_type }}</div>
+          <div
+            class="inner_wrapper__box__item"
+            v-if="core.landing_vehicle"
+          >
             <b>Landing vehicle: </b>{{ core.landing_vehicle }}
           </div>
         </div>
-        <div class="inner_wrapper__box__item_title"><b>Second stage: </b></div>
-        <div class="inner_wrapper__box__item">
+        <div
+          class="inner_wrapper__box__item_title"
+          v-if="this.item.rocket.second_stage"
+        ><b>Second stage: </b></div>
+        <div
+          class="inner_wrapper__box__item"
+          v-if="this.item.rocket.second_stage.block"
+        >
           <b>Block: </b>{{ this.item.rocket.second_stage.block }}
         </div>
         <div
@@ -239,12 +319,6 @@
             <div class="inner_wrapper__box__item__box_title"><b>Orbit parameters</b></div>
             <div
               class="inner_wrapper__box__item"
-              v-if="payload.cap_serial"
-            >
-              <b>Cap serial: </b>{{ payload.orbit_params.reference_system }}
-            </div>
-            <div
-              class="inner_wrapper__box__item"
               v-if="payload.orbit_params.reference_system"
             >
               <b>Reference_system: </b>{{ payload.orbit_params.reference_system }}
@@ -259,7 +333,7 @@
               class="inner_wrapper__box__item"
               v-if="payload.orbit_params.longitude"
             >
-              <b>Longitude: </b>{{ payload.orbit_params.longitude }}
+              <b>Longitude: </b>{{ payload.orbit_params.longitude }}&deg;
             </div>
             <div
               class="inner_wrapper__box__item"
@@ -344,7 +418,7 @@
             class="inner_wrapper__box__item"
             v-if="payload.flight_time_sec"
           >
-            <b>Flight time: </b>{{ payload.flight_time_sec }}
+            <b>Flight time: </b>{{ payload.flight_time_sec + " s" }}
           </div>
           <div
             class="inner_wrapper__box__item"
@@ -358,23 +432,35 @@
           v-if="this.item.rocket.fairings"
         >
           <div class="inner_wrapper__box__item_title"><b>Fairings</b></div>
-          <div class="inner_wrapper__box__item">
+          <div
+            class="inner_wrapper__box__item"
+            v-if="this.item.rocket.fairings.recovered"
+          >
             <b>Recovered: </b>{{ this.item.rocket.fairings.recovered ? "Yes" : "No" }}
           </div>
-          <div class="inner_wrapper__box__item">
+          <div
+            class="inner_wrapper__box__item"
+            v-if="this.item.rocket.fairings.recovery_attempt"
+          >
             <b>Recovery attempt: </b>{{ this.item.rocket.fairings.recovery_attempt ? "Yes" : "No" }}
           </div>
-          <div class="inner_wrapper__box__item">
+          <div
+            class="inner_wrapper__box__item"
+            v-if="this.item.rocket.fairings.reused"
+          >
             <b>Reused: </b>{{ this.item.rocket.fairings.reused ? "Yes" : "No" }}
           </div>
-          <div class="inner_wrapper__box__item">
+          <div
+            class="inner_wrapper__box__item"
+            v-if="this.item.rocket.fairings.ship"
+          >
             <b>Ship: </b>{{ this.item.rocket.fairings.ship ? "Yes" : "No" }}
           </div>
         </div>
       </div>
       <div
         class="inner_wrapper__box"
-        v-if="this.item.ships"
+        v-if="this.item.ships.length"
       >
         <div class="inner_wrapper__box__item_title"><b>Ships</b></div>
         <div
@@ -387,13 +473,13 @@
       </div>
       <div
         class="inner_wrapper__gallery"
-        v-if="this.photos"
+        v-if="this.photos.length"
       >
         <div class="inner_wrapper__gallery__inner_title"><b>Gallery</b></div>
         <div class="inner_wrapper__gallery__inner">
           <div
             class="inner_wrapper__gallery__inner__item_1"
-            @click="handleClickLeft"
+            @click="handleSwitchGalleryIcons"
           >
             <img
               src="../assets/chevron-left.svg"
@@ -425,7 +511,10 @@
           ></iframe>
         </div>
       </div>
-      <div class="inner_wrapper__box_end">
+      <div
+        class="inner_wrapper__box_end"
+        v-if="this.item.links.reddit_campaign !== null || this.item.links.reddit_launch !== null || this.item.links.reddit_recovery !== null || this.item.links.reddit_media !== null || this.item.links.presskit !== null || this.item.links.article_link !== null || this.item.links.wikipedia !== null"
+      >
         <div class="inner_wrapper__box_end__item_title"><b>Links</b></div>
         <div
           class="inner_wrapper__box_end__item"
@@ -528,7 +617,7 @@ export default {
       photo: this.item.links.mission_patch,
       launch_place_short: this.item.launch_site.site_name,
       photos: this.item.links.flickr_images,
-      timeline_lenght: Object.keys(this.item.timeline).length,
+      timeline_lenght: null,
       timeline_sorted_values: [],
       timeline_sorted_keys: [],
       timeline_keys: [],
@@ -539,7 +628,7 @@ export default {
     };
   },
   methods: {
-    handleClickLeft() {
+    handleSwitchGalleryIcons() {
       if (Object.keys(this.photos).length !== 0) {
         this.iterator += 1;
         if (this.is_start === true) {
@@ -582,29 +671,48 @@ export default {
       return `T+ ${result}`;
     },
     sortTimelineObject() {
-      this.timeline_sorted_values = Object.values(this.item.timeline).sort(this.compareTimelineValues);
-      this.timeline_keys = Object.keys(this.item.timeline);
-      for (let i = 0; i < this.timeline_lenght; i += 1) {
-        for (let j = 0; j < this.timeline_lenght; j += 1) {
-          if (this.timeline_sorted_values[i] === this.item.timeline[this.timeline_keys[j]]) {
-            this.timeline_sorted_keys[i] = this.timeline_keys[j];
-            this.timeline_keys.splice(j, 1);
+      if (this.timeline_lenght !== null) {
+        this.timeline_sorted_values = Object.values(this.item.timeline).sort(this.compareTimelineValues);
+        this.timeline_keys = Object.keys(this.item.timeline);
+        for (let i = 0; i < this.timeline_lenght; i += 1) {
+          for (let j = 0; j < this.timeline_lenght; j += 1) {
+            if (this.timeline_sorted_values[i] === this.item.timeline[this.timeline_keys[j]]) {
+              this.timeline_sorted_keys[i] = this.timeline_keys[j];
+              this.timeline_keys.splice(j, 1);
+            }
           }
         }
       }
     },
-    handleTimeline(index) {
-      $('.inner_wrapper_timeline_value').text(this.timelineDateFormat(this.timeline_sorted_values[index]));
-      $('.inner_wrapper_timeline_insert').text(
-        this.timeline_sorted_keys[index] !== undefined
-          ? this.timeline_sorted_keys[index].replace(/_/g, ' ') : 'undefined',
-      ).css({ 'text-transform': 'capitalize' });
+    handleTimelineIn(index) {
+      if (this.timeline_lenght !== null) {
+        $('.inner_wrapper_timeline_value').text(this.timelineDateFormat(this.timeline_sorted_values[index])).animate({ opacity: 1 }, 500);
+        $('.inner_wrapper_timeline_insert').text(
+          this.timeline_sorted_keys[index] !== undefined
+            ? this.timeline_sorted_keys[index].replace(/_/g, ' ') : 'undefined',
+        ).css({ 'text-transform': 'capitalize' }).animate({ opacity: 1 }, 500);
+        $(`.timeline_marker:nth-child(${index + 2})`).delay(200).animate({ opacity: 0 }, 500);
+        $(`.timeline_marker--active:nth-child(${this.timeline_lenght + index + 2})`).delay(200).animate({ opacity: 1 }, 500);
+      }
+    },
+    handleTimelineOut(index) {
+      if (this.timeline_lenght !== null) {
+        $(`.timeline_marker--active:nth-child(${this.timeline_lenght + index + 2})`).delay(200).animate({ opacity: 0 }, 500);
+        $(`.timeline_marker:nth-child(${index + 2})`).delay(200).animate({ opacity: 1 }, 500);
+      }
+    },
+    handleTooltipTimelineIn() {
+      $('.tooltip_timeline').animate({ opacity: 1 }, 500);
+    },
+    handleTooltipTimelineOut() {
+      $('.tooltip_timeline').animate({ opacity: 0 }, 500);
     },
     compareTimelineValues(a, b) {
       return a - b;
     },
   },
   mounted() {
+    this.timeline_lenght = this.item.timeline !== null ? Object.keys(this.item.timeline).length : null;
     $('.item__photo_right').css('background-image', `url("${this.photos[2]}")`);
     $('.inner_wrapper__gallery__inner__item_3').css('background-image', `url("${this.photos[1]}")`);
     $('.item__photo_left').css('background-image', `url("${this.photos[0]}")`);
@@ -770,8 +878,49 @@ export default {
     }
 
     .inner_wrapper_timeline_title {
+      position: relative;
       font-size: 11px;
       border-bottom: 0.3px solid rgba(0, 0, 0, 0.5);
+
+      .marker_warning {
+        position: relative;
+        top: 2px;
+        width: 12px;
+        height: 12px;
+        margin-left: 5px;
+
+        @media (max-width: 767px) {
+          display: none;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .tooltip_timeline {
+        position: absolute;
+        left: 70px;
+        top: 0px;
+        width: 350px;
+        height: 17px;
+        font-size: 8px;
+        text-align: center;
+        padding: 3px;
+        color: #ffffff;
+        border-radius: 3px;
+        opacity: 0;
+        background-color: #41414159;
+
+        @media (max-width: 767px) {
+          display: none;
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+          width: 250px;
+          height: 17px;
+        }
+      }
     }
 
     .inner_wrapper_timeline__item {
@@ -792,13 +941,19 @@ export default {
 
         .timeline_marker {
           cursor: pointer;
+          z-index: 1;
+        }
+
+        .timeline_marker--active {
+          cursor: pointer;
+          opacity: 0;
         }
       }
     }
 
     .inner_wrapper_timeline_value {
       width: 100%;
-      height: 50px;
+      height: 60px;
       font-size: 16px;
       font-weight: 700;
       text-align: center;
@@ -812,7 +967,7 @@ export default {
 
     .inner_wrapper_timeline_insert {
       width: 100%;
-      height: 50px;
+      height: 30px;
       font-size: 9px;
       font-weight: 400;
       text-align: center;
