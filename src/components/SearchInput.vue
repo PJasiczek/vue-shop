@@ -41,6 +41,8 @@ input {
   text-align: center;
   color: #ffffff;
   opacity: 0.7;
+  border-radius: 0;
+  -webkit-border-radius: 0;
   font-family: "Quicksand", sans-serif;
   border-bottom: 1.5px solid #ffffff;
   background-color: transparent;
